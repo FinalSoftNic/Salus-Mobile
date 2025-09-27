@@ -1,5 +1,8 @@
 import React from 'react';
 /* Register */
+
+/* Register */
+
 import {
   View,
   Text,
