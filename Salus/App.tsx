@@ -5,6 +5,15 @@ import Login from './Screens/Login';
 import Register from './Screens/Register';
 import Authentication from './Screens/Authentication';
 import Home from './Screens/Home';
+import VPH from './Screens/VPH';
+import MiDiario from './Screens/miDiario';
+
+import Expediente from './Screens/Expediente';
+import Citas from './Screens/Citas';
+import CancerMama from './Screens/CancerMama';
+import Campaña from './Screens/Campaña';
+
+
 
 const App = () => {
   const [screen, setScreen] = useState('welcome');
@@ -15,7 +24,16 @@ const App = () => {
       {screen === 'login' && <Login onNavigate={setScreen} />}
       {screen === 'register' && <Register onNavigate={setScreen} />}
       {screen === 'Authentication' && <Authentication onNavigate={setScreen} />}
-      {screen === 'Home' && <Home/>}
+      {screen === 'Home' && <Home onNavigate={setScreen}/>}
+
+      {screen === 'VPH' && <VPH onNavigate={setScreen} />}
+      {screen === 'MiDiario' && <MiDiario onNavigate={setScreen} />}
+    
+      {screen === 'Expediente' && <Expediente onNavigate={setScreen} />}
+      {screen === 'Citas' && <Citas onNavigate={setScreen} />}
+      {screen === 'CancerMama' && <CancerMama onNavigate={setScreen} />}
+      {screen === 'Campaña' && <Campaña onNavigate={setScreen} />}
+      
     </View>
   );
 };
