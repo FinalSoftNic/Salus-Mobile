@@ -6,26 +6,20 @@ const Home = ( {onNavigate}) => {
  
   return (
     <View style={styles.container}>
-      {/*
-        === Contenido Fijo Superior (Header) ===
-        Contiene elementos con position: 'absolute' (textos y botón de menú)
-      */}
+      
       <View style={styles.header}>
-        {/* Texto superior izquierdo */}
+        
         <Text style={styles.greetingText}>Bienvenida Aura</Text>
         <Text style={styles.greetingText1}>Lunes 25</Text>
 
         {/* Botón superior derecho */}
-        <TouchableOpacity style={styles.topButton}>
+        <TouchableOpacity style={styles.topButton} onPress={() => onNavigate('ajustes')}>
           {/* Asegúrate de que la ruta de la imagen sea correcta */}
           <Image source={require('./Pictures/3boton.png')} style={styles.topButtonImage} />
         </TouchableOpacity>
       </View>
 
-      {/*
-        === Contenido Principal con Scroll ===
-        El resto del contenido se envuelve en un ScrollView.
-      */}
+    
       <ScrollView contentContainerStyle={styles.scrollContent}>
         
         {/* Fila 1: Expediente y Próxima Cita (Dos botones grandes en fila) */}
@@ -48,10 +42,7 @@ const Home = ( {onNavigate}) => {
           <Image source={require('./Pictures/3_1Texto.png')} style={styles.textImage} />
         </View>
 
-        {/*
-          === Sección de Últimos Botones Verticales (Con Scroll) ===
-          Tres botones apilados en una columna.
-        */}
+       
         <View style={styles.lastButtonsSection}>
           
           {/* Último Botón 1: Vacunación (vac.png) */}
@@ -125,7 +116,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   
-  // Contenido con Scroll
+  // contenido con scroll
   scrollContent: {
     alignItems: 'center',
     paddingBottom: 20, // Espacio al final del scroll
@@ -135,7 +126,7 @@ const styles = StyleSheet.create({
   row1: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: -10, // Ajuste para acercar al header
+    marginTop: -10, 
   },
   largeButton: {
     marginHorizontal: 10,
@@ -152,7 +143,7 @@ const styles = StyleSheet.create({
     top:-60,
   },
 
-  // Wrapper para la imagen/texto no interactivo
+  // wrapper para la imagen texto
   textImageWrapper: {
     marginVertical: 0,
     width: 320,
@@ -168,7 +159,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   
-  // Estilo general para imágenes de tamaño estándar
+  // estilo general para imágenes de tamaño estándar
   image: {
     width: '100%',
     height: '100%',
@@ -176,7 +167,7 @@ const styles = StyleSheet.create({
     top:0,
   },
 
-  // Sección de botones verticales
+  // botones verticales
   lastButtonsSection: {
     flexDirection: 'column', // Columna vertical
     alignItems: 'center',
@@ -184,13 +175,13 @@ const styles = StyleSheet.create({
     top:-80,
   },
   lastButton: {
-    width: 350, // Ancho consistente
-    height: 120, // Altura para cada botón vertical
+    width: 350, // Ancho
+    height: 120, // Altura
     marginVertical: 10,
   },
   lastButtonImage: {
     width: '100%',
-    height: '100%', // Usar '100%' aquí si la imagen ya tiene la proporción deseada
+    height: '100%', 
     resizeMode: 'contain',
   },
 });

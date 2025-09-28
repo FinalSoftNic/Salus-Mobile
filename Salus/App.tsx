@@ -12,6 +12,7 @@ import Expediente from './Screens/Expediente';
 import Citas from './Screens/Citas';
 import CancerMama from './Screens/CancerMama';
 import Campaña from './Screens/Campaña';
+import Ajustes from './Screens/ajustes';
 
 
 
@@ -33,6 +34,7 @@ const App = () => {
       {screen === 'Citas' && <Citas onNavigate={setScreen} />}
       {screen === 'CancerMama' && <CancerMama onNavigate={setScreen} />}
       {screen === 'Campaña' && <Campaña onNavigate={setScreen} />}
+      {screen === 'ajustes' && <Ajustes onNavigate={setScreen} />}
       
     </View>
   );
