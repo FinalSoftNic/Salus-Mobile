@@ -1,70 +1,132 @@
-import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+// Importamos Modal para la ventana emergente
+import { View, StyleSheet, Text, TouchableOpacity, ImageBackground, Image, Modal } from 'react-native';
 
-// CORRECCIÓN 1: Desestructura { onNavigate } de las props
 const Expediente = ({ onNavigate }) => {
+  // Estado para controlar la visibilidad de la ventana emergente (Modal)
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
   return (
-    <View style={styles.container}>
-      {/* Texto simple centrado */}
-      <Text style={styles.greetingText}>
-        ¡Hola!
-      </Text>
-      <Text style={styles.greetingText}>
-        Bienvenida
-      </Text>
-      
-      {/* Se asume que este View tiene algún propósito de diseño */}
-      <View style={styles.row1}></View>
-      
-      <TouchableOpacity style={styles.backButton} onPress={() => onNavigate('Home')}>
-        <Text style={styles.backText}>← Atrás</Text>
+    // Usamos ImageBackground como contenedor principal
+    <ImageBackground
+      source={require('./Pictures/expedientees.png')} // Imagen de fondo
+      style={styles.background}
+      resizeMode="cover"
+    >
+      {/* 1. Botón de regreso (arriba a la izquierda) */}
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => onNavigate('Home')}
+      >
+        <Text style={styles.backText}>←</Text>
       </TouchableOpacity>
+
+      {/* 2. La imagen central convertida en BOTÓN que abre el Modal */}
+      <View style={styles.centerContainer}>
+        <TouchableOpacity 
+          onPress={() => setIsModalVisible(true)} // Abre el modal
+        >
+          <Image
+            source={require('./Pictures/exp2.png')}
+            style={styles.expImage}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+      </View>
       
-      {/* CORRECCIÓN 2: Se eliminó <View/> mal colocado. */}
-      {/* Si querías cerrar el componente <View> principal, ya está cerrado abajo. */}
-      {/* Si querías un View adicional, debe estar como <View></View> o <View /> */}
-      
-    </View>
+      {/* ========================================================= */}
+      {/* 3. VENTANA EMERGENTE (MODAL) */}
+      {/* ========================================================= */}
+      <Modal
+        visible={isModalVisible}
+        animationType="fade" // Efecto de aparición suave
+        transparent={false} // Necesario para que el modal cubra toda la pantalla
+        onRequestClose={() => setIsModalVisible(false)} // Permite cerrar con el botón de atrás de Android
+      >
+        <ImageBackground
+          source={require('./Pictures/xExp.png')} // La imagen que cubre el modal
+          style={styles.modalBackground}
+          resizeMode="cover"
+        >
+          {/* Botón 'X' para regresar a la normalidad */}
+          <TouchableOpacity 
+            style={styles.closeButton} 
+            onPress={() => setIsModalVisible(false)} // Cierra el modal
+          >
+            <Text style={styles.closeText}>X</Text>
+          </TouchableOpacity>
+        </ImageBackground>
+      </Modal>
+
+    </ImageBackground>
   );
 };
 
 export default Expediente;
 
 const styles = StyleSheet.create({
-  // El contenedor principal ocupa toda la pantalla
-  container: {
+  // Estilo para ImageBackground (fondo)
+  background: {
     flex: 1,
-    // Alinea los elementos hijos (el texto) en el centro horizontal y vertical
-    justifyContent: 'center', 
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f8f8f8', // Un color de fondo suave
   },
   
-  // Estilo del texto
-  greetingText: {
-    fontSize: 32, // Tamaño de fuente grande
-    fontWeight: 'bold', // Negrita
-    color: '#333', // Color de texto oscuro
-    marginVertical: 5, // Espacio vertical entre los textos
+  // Contenedor para posicionar la imagen exp2.png
+  centerContainer: {
+    marginTop: -50, 
+    width: '80%',
+    height: 'auto',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-
-  // --- Estilos Añadidos (necesarios para evitar errores) ---
-  row1: {
-    width: '80%', 
-    height: 50, 
-    backgroundColor: 'transparent',
-    marginVertical: 20,
+  
+  // Estilo de la imagen que se convierte en botón (exp2.png)
+  expImage: {
+    width: 390, // Ajusta el ancho para mejor visualización
+    height: 400,   
+    top: -80,
+    resizeMode: 'contain',
   },
+  
+  // Estilos del botón de regreso principal
   backButton: {
-    position: 'absolute', // Colócalo en una posición específica
-    bottom: 40,
+    position: 'absolute',
+    top: 40,
+    left: 20,
     padding: 10,
-    backgroundColor: '#007AFF', // Color de botón
-    borderRadius: 5,
+    zIndex: 10,
   },
   backText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: '600',
+    color: '#333',
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+
+  // =========================================================
+  // ESTILOS DEL MODAL
+  // =========================================================
+  modalBackground: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    // Nota: El contenido del modal (el botón X) se alinea aquí
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 40, 
+    right: 20, // Colocado en la esquina superior derecha
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)', // Fondo semitransparente para el botón
+    borderRadius: 5,
+    zIndex: 20,
+  },
+  closeText: {
+    color: 'white', // La 'X' blanca
+    fontSize: 24,
+    fontWeight: 'bold',
   },
 });

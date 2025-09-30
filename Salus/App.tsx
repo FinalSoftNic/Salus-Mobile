@@ -6,7 +6,7 @@ import Register from './Screens/Register';
 import Authentication from './Screens/Authentication';
 import Home from './Screens/Home';
 import VPH from './Screens/VPH';
-import MiDiario from './Screens/miDiario';
+import MiDiario from './Screens/MiDiario';
 
 import Expediente from './Screens/Expediente';
 import Citas from './Screens/Citas';

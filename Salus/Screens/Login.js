@@ -1,31 +1,47 @@
 import React, { useState } from 'react';
 import {
-  View,Text,StyleSheet, TouchableOpacity, ImageBackground, TextInput,
-  Image, ScrollView, Alert, ActivityIndicator 
+  View, Text, StyleSheet, TouchableOpacity, ImageBackground, TextInput,
+  Image, ScrollView, Alert, ActivityIndicator
 } from 'react-native';
 
-// Se eliminan todas las importaciones de Firebase.
-// import { signInWithEmailAndPassword } from 'firebase/auth' ;
-// import { auth } from "../Creden"; 
-
-// La función 'Login' ya no usa useState, pero lo importamos por si lo necesitas más adelante.
 const Login = ({ onNavigate }) => {
 
-  // Se mantienen las variables de estado, pero puedes eliminarlas si no planeas usarlas.
-  const [email, setEmail] = useState(''); // Inicializado a vacío para evitar errores de null
+  // 1. NUEVO ESTADO: Para controlar si el proceso de verificación está en curso
+  const [loading, setLoading] = useState(false);
+
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
-  // Función Logins simplificada: solo navega.
-  const Logins = () => { 
-    // Simplemente navega a la siguiente pantalla para avanzar en el desarrollo.
-    onNavigate('Authentication');
+
+  const Logins = () => {
+    // 2. INICIO DE LA CARGA: Mostrar el indicador y mensaje de "Verificando"
+    setLoading(true);
+
+    // 3. SIMULAR LA VERIFICACIÓN: Usamos setTimeout para simular la espera de una API
+    // (Por ejemplo, 1.5 segundos)
+    setTimeout(() => {
+      // 4. FIN DE LA CARGA Y NAVEGACIÓN:
+      setLoading(false);
+
+      // Aquí puedes añadir la lógica de verificación de email/contraseña
+      // Pero para este ejemplo, simplemente navegamos a la siguiente pantalla
+      onNavigate('Authentication');
+    }, 1500); // 1500 milisegundos = 1.5 segundos
   };
 
-  // Función auxiliar para navegar a registro
   const handleRegister = () => {
     onNavigate('register');
   };
-  
+
+  // 5. RENDERIZADO CONDICIONAL para mostrar la pantalla de carga
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#354d84" />
+        <Text style={styles.loadingText}>Verificando...</Text>
+      </View>
+    );
+  }
+
   return (
     <ImageBackground
       source={require('./Pictures/FondoInicio.png')}
@@ -36,11 +52,11 @@ const Login = ({ onNavigate }) => {
       <TouchableOpacity
         style={styles.backButton}
         onPress={() => onNavigate('welcome')}
+        disabled={loading} // Deshabilita mientras carga (aunque loading tiene su propia pantalla)
       >
         <Text style={styles.backText}>← Atrás</Text>
       </TouchableOpacity>
 
-      {/* Contenido con scroll */}
       <ScrollView
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
@@ -52,14 +68,14 @@ const Login = ({ onNavigate }) => {
           resizeMode="contain"
         />
 
-        {/* Inputs (Se mantienen los inputs para el diseño) */}
+        {/* Inputs */}
         <TextInput
           style={styles.input}
           placeholder="Correo electrónico"
           keyboardType="email-address"
           value={email}
           onChangeText={setEmail}
-          // editable siempre true ya que no hay loading
+          editable={!loading} // Se deshabilita mientras carga
         />
         <TextInput
           style={styles.input}
@@ -67,29 +83,28 @@ const Login = ({ onNavigate }) => {
           secureTextEntry
           value={password}
           onChangeText={setPassword}
-          // editable siempre true ya que no hay loading
+          editable={!loading} // Se deshabilita mientras carga
         />
 
         {/* Texto de recuperación arriba del botón */}
-        <TouchableOpacity>
+        <TouchableOpacity disabled={loading}>
           <Text style={styles.linkTextO}>¿Has olvidado tu contraseña?</Text>
         </TouchableOpacity>
 
-        {/* Botón Iniciar Sesión (Ahora navega directamente) */}
-        <TouchableOpacity 
+        {/* Botón Iniciar Sesión (Ahora llama a la función con el temporizador) */}
+        <TouchableOpacity
           onPress={Logins}
-          // Se quita disabled={loading}
+          disabled={loading} // Deshabilita el botón durante la carga
         >
-          {/* Se quita la lógica de ActivityIndicator, solo muestra el botón */}
-            <Image
-              source={require('./Pictures/iniciarEntrar.png')}
-              style={styles.iniciarButton}
-              resizeMode="contain"
-            />
+          <Image
+            source={require('./Pictures/iniciarEntrar.png')}
+            style={styles.iniciarButton}
+            resizeMode="contain"
+          />
         </TouchableOpacity>
 
         {/* Texto de registro */}
-        <TouchableOpacity onPress={handleRegister}>
+        <TouchableOpacity onPress={handleRegister} disabled={loading}>
           <Text style={styles.linkTextR}>
             ¿Primera vez aquí? haz clic y regístrate en segundos
           </Text>
@@ -102,6 +117,20 @@ const Login = ({ onNavigate }) => {
 export default Login;
 
 const styles = StyleSheet.create({
+  // NUEVO ESTILO para la pantalla de carga
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white', // O el color que desees para el fondo de carga
+  },
+  loadingText: {
+    marginTop: 15,
+    fontSize: 20,
+    color: '#354d84',
+    fontFamily: 'monospace',
+  },
+  // --- ESTILOS EXISTENTES ---
   background: {
     flex: 1,
     width: '100%',
@@ -152,8 +181,8 @@ const styles = StyleSheet.create({
     height: 60,
     marginVertical: 20,
     marginTop: 30,
-    justifyContent: 'center', 
-    alignItems: 'center', 
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   linkTextR: {
     fontSize: 14,

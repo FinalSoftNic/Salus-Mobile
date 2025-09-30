@@ -1,25 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, Text, ScrollView } from 'react-native';
-import { Button } from 'react-native/types_generated/index';
+// Nota: Se elimina la importación de Button, ya que no se usa y genera advertencias.
+
+// Función para formatear la fecha a "Día de la semana DD"
+const formatCurrentDate = () => {
+  const date = new Date();
+  // Configuración para obtener el nombre del día de la semana y el número del día.
+  const options = { weekday: 'long', day: 'numeric' };
+  
+  // Formatear al idioma español
+  const formatted = new Intl.DateTimeFormat('es-ES', options).format(date);
+  
+  // Capitaliza la primera letra (e.g., "lunes 25" -> "Lunes 25")
+  return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+};
+
 
 const Home = ( {onNavigate}) => {
- 
+  // 1. Estado para almacenar la fecha actual, inicializado con la fecha formateada
+  const [currentDate, setCurrentDate] = useState(formatCurrentDate());
+  // Nota: La fecha se actualizará cada vez que el componente se monte o refresque.
+  
   return (
     <View style={styles.container}>
       
       <View style={styles.header}>
         
-        <Text style={styles.greetingText}>Bienvenida Aura</Text>
-        <Text style={styles.greetingText1}>Lunes 25</Text>
+        <Text style={styles.greetingText}>Bienvenida " "</Text>
+        
+        {/* 2. Reemplazar el texto fijo con la variable de estado */}
+        <Text style={styles.greetingText1}>{currentDate}</Text>
 
         {/* Botón superior derecho */}
         <TouchableOpacity style={styles.topButton} onPress={() => onNavigate('ajustes')}>
-          {/* Asegúrate de que la ruta de la imagen sea correcta */}
           <Image source={require('./Pictures/3boton.png')} style={styles.topButtonImage} />
         </TouchableOpacity>
       </View>
 
-    
+      
       <ScrollView contentContainerStyle={styles.scrollContent}>
         
         {/* Fila 1: Expediente y Próxima Cita (Dos botones grandes en fila) */}
@@ -33,7 +51,7 @@ const Home = ( {onNavigate}) => {
         </View>
 
         {/* Botón 2: Cuadro de Carpeta (Un solo botón grande/ancho) */}
-        <TouchableOpacity style={styles.singleButton}>
+        <TouchableOpacity style={styles.singleButton } onPress={() => onNavigate('MiDiario')}> 
           <Image source={require('./Pictures/3_cuadroCarp.png')} style={styles.image} />
         </TouchableOpacity>
 
@@ -42,13 +60,13 @@ const Home = ( {onNavigate}) => {
           <Image source={require('./Pictures/3_1Texto.png')} style={styles.textImage} />
         </View>
 
-       
+        
         <View style={styles.lastButtonsSection}>
           
           {/* Último Botón 1: Vacunación (vac.png) */}
           <TouchableOpacity style={styles.lastButton} onPress={() => onNavigate('Campaña')}>
-    <Image source={require('./Pictures/vac.png')} style={styles.lastButtonImage} />
-</TouchableOpacity>
+            <Image source={require('./Pictures/vac.png')} style={styles.lastButtonImage} />
+          </TouchableOpacity>
 
           {/* Último Botón 2: Información 1 (info.png) */}
           <TouchableOpacity style={styles.lastButton} onPress={() => onNavigate('VPH')}>
@@ -75,7 +93,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   
-
   header: {
     paddingTop: 40,
     height: 120, 
@@ -92,6 +109,7 @@ const styles = StyleSheet.create({
     color: '#333',
     zIndex: 10,
   },
+  // Estilo que muestra la fecha dinámica
   greetingText1: {
     position: 'absolute',
     top: 90,
